@@ -26,36 +26,40 @@
 
 ## 🛠️ **Tech Stack**
 
-<table style="width:100%">
-  <thead>
-    <tr>
-      <th style="text-align: left;">Category</th>
-      <th style="text-align: left;">Technologies</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align: left;">Frontend</td>
-      <td style="text-align: left;">ReactJS, TypeScript</td>
-    </tr>
-    <tr>
-      <td style="text-align: left;">Styling</td>
-      <td style="text-align: left;">Tailwind CSS</td>
-    </tr>
-    <tr>
-      <td style="text-align: left;">API</td>
-      <td style="text-align: left;">JSONPlaceholder, Quotable API</td>
-    </tr>
-    <tr>
-      <td style="text-align: left;">Build Tool</td>
-      <td style="text-align: left;">Webpack</td>
-    </tr>
-    <tr>
-      <td style="text-align: left;">Hosting</td>
-      <td style="text-align: left;">Netlify</td>
-    </tr>
-  </tbody>
-</table>
+## 🛠️ Tech Stack
+
+<div style="width: 100%; text-align: left;">
+  <table style="width: 100%; border-collapse: collapse;">
+    <thead>
+      <tr>
+        <th style="text-align: left; padding: 8px; border-bottom: 2px solid #ddd;">Category</th>
+        <th style="text-align: left; padding: 8px; border-bottom: 2px solid #ddd;">Technologies</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">Frontend</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">ReactJS, TypeScript</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">Styling</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">Tailwind CSS</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">API</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">JSONPlaceholder, Quotable API</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">Build Tool</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">Webpack</td>
+      </tr>
+      <tr>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">Hosting</td>
+        <td style="padding: 8px; border-bottom: 1px solid #ddd;">Netlify</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 ---
 
