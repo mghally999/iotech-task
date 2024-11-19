@@ -6,7 +6,7 @@
 
 ![Todo Grind Screenshot](./public/app-screenshot.png)
 
-## 🌐 [Live Demo](<https://todogrind.netlify.app/>)
+## 🌐 [Live Demo](https://todogrind.netlify.app/)
 
 ---
 
@@ -25,8 +25,6 @@
 ---
 
 ## 🛠️ **Tech Stack**
-
-## 🛠️ Tech Stack
 
 <div style="width: 100%; text-align: left;">
   <table style="width: 100%; border-collapse: collapse;">
