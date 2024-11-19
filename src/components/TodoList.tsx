@@ -1,14 +1,18 @@
-import { Todo } from "../models/Todo";
 import TodoItem from "./TodoItem";
+import { TodoListProps } from "../models/interfaces";
 
-interface TodoListProps {
-  todos: Todo[];
-  deleteTodo: (id: number) => void;
-  editTodo: (id: number, updatedTodo: Partial<Todo>) => void;
-  loadMore: () => void;
-  hasMore: boolean;
-}
-
+/**
+ * TodoList Component
+ *
+ * Displays a list of todos with support for editing, deleting, and loading more items.
+ *
+ * Props:
+ * - `todos`: Array of todo objects to display.
+ * - `deleteTodo`: Function to delete a todo by id.
+ * - `editTodo`: Function to edit a todo by updating its title or description.
+ * - `loadMore`: Function to load additional todos when needed.
+ * - `hasMore`: Boolean indicating if more todos are available to load.
+ */
 const TodoList = ({
   todos,
   deleteTodo,
@@ -18,21 +22,26 @@ const TodoList = ({
 }: TodoListProps) => {
   return (
     <div className="space-y-4">
+      {/* Render each todo item */}
       {todos.map((todo) => (
         <TodoItem
-          key={todo.id}
+          key={todo.id} // Use unique id for each todo
           todo={todo}
           deleteTodo={deleteTodo}
           editTodo={editTodo}
         />
       ))}
+
+      {/* Display 'Load More' button if there are more todos */}
       {hasMore && (
-        <button
-          onClick={loadMore}
-          className="w-full p-3 text-lg font-bold text-white bg-yellow-500 rounded load-more-btn"
-        >
-          Load More
-        </button>
+        <div className="flex justify-center">
+          <button
+            onClick={loadMore} // Load more todos when clicked
+            className="w-1/2 p-2 text-lg font-bold text-white rounded load-more-btn"
+          >
+            Load More
+          </button>
+        </div>
       )}
     </div>
   );

@@ -1,1 +1,1 @@
-export const TODOS_PER_PAGE = 10;
+export const TODOS_PER_PAGE = 7;

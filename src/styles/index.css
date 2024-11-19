@@ -2,13 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* .app-container {
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  flex-direction: column;
-} */
-
 h3 {
   color: #f5f5f5;
 }
@@ -30,22 +23,26 @@ p {
   background: #1e1e1e;
 }
 
-.add-btn,
-.load-more-btn {
+.add-btn {
   background: #292929;
   transition: background-color 0.3s ease;
-}
-
-.add-btn:hover,
-.load-more-btn:hover {
-  background-color: #0d0d0d;
 }
 
 .edit-btn,
 .delete-btn,
 .save-btn,
-.cancel-btn {
+.cancel-btn,
+.load-more-btn {
   background: #0d0d0d;
+  transition: background-color 0.3s ease;
+}
+
+.add-btn:hover {
+  background-color: #0d0d0d;
+}
+
+.load-more-btn:hover {
+  background-color: #292929;
 }
 
 .adding-input,
