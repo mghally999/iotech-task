@@ -6,7 +6,7 @@
 
 ![Todo Grind Screenshot](./public/app-screenshot.png)
 
-## 🌐 [Live Demo](https://todogrind.netlify.app/){:target="\_blank"}
+## 🌐 [Live Demo](<https://todogrind.netlify.app/>)
 
 ---
 
@@ -24,15 +24,38 @@
 
 ---
 
-## **🛠️ Tech Stack**
+## 🛠️ **Tech Stack**
 
-| **Category**   | **Technologies**              |
-| -------------- | ----------------------------- |
-| **Frontend**   | ReactJS, TypeScript           |
-| **Styling**    | Tailwind CSS                  |
-| **API**        | JSONPlaceholder, Quotable API |
-| **Build Tool** | Webpack                       |
-| **Hosting**    | Netlify                       |
+<table style="width:100%">
+  <thead>
+    <tr>
+      <th style="text-align: left;">Category</th>
+      <th style="text-align: left;">Technologies</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left;">Frontend</td>
+      <td style="text-align: left;">ReactJS, TypeScript</td>
+    </tr>
+    <tr>
+      <td style="text-align: left;">Styling</td>
+      <td style="text-align: left;">Tailwind CSS</td>
+    </tr>
+    <tr>
+      <td style="text-align: left;">API</td>
+      <td style="text-align: left;">JSONPlaceholder, Quotable API</td>
+    </tr>
+    <tr>
+      <td style="text-align: left;">Build Tool</td>
+      <td style="text-align: left;">Webpack</td>
+    </tr>
+    <tr>
+      <td style="text-align: left;">Hosting</td>
+      <td style="text-align: left;">Netlify</td>
+    </tr>
+  </tbody>
+</table>
 
 ---
 
@@ -50,4 +73,3 @@ Follow the steps below to run the project locally.
 1. Clone the repository:
    ```bash
    git clone https://github.com/mghally999/iotech-task.git
-   ```
