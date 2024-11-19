@@ -6,7 +6,7 @@
 
 ![Todo Grind Screenshot](./public/app-screenshot.png)
 
-## 🌐 [Live Demo](https://todogrind.netlify.app/)
+## 🌐 [Live Demo](https://todogrind.netlify.app/){:target="\_blank"}
 
 ---
 
