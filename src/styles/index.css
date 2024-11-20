@@ -23,6 +23,24 @@ p {
   background: #1e1e1e;
 }
 
+.sidebar {
+  height: auto;
+}
+
+.content-area {
+  height: auto;
+}
+
+@media (min-width: 768px) {
+  .sidebar {
+    height: 100vh;
+  }
+
+  .content-area {
+    height: 100%;
+  }
+}
+
 .add-btn {
   background: #292929;
   transition: background-color 0.3s ease;
