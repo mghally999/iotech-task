@@ -9,13 +9,16 @@ import "./styles/index.css";
 
 /**
  * Main Application Component
- * Manages state and integrates functionality for todo management.
+ * Handles state, sorting, pagination, and integration with the mock API.
  */
 const App = () => {
-  const [todos, setTodos] = useState<Todo[]>([]); // State to manage todo list
-  const [page, setPage] = useState(1); // State to track the current page for pagination
+  const [todos, setTodos] = useState<Todo[]>([]); // State to manage the list of todos
+  const [page, setPage] = useState(1); // State to track pagination
+  const [sortCriteria, setSortCriteria] = useState<string>(""); // State to manage sorting criteria
 
-  // Fetch initial data from APIs when the component mounts
+  /**
+   * Fetch initial data from the mock API when the component mounts
+   */
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -29,26 +32,26 @@ const App = () => {
   }, []);
 
   /**
-   * Add a new todo item to the list.
-   * @param title - The title of the todo.
-   * @param description - The description of the todo.
+   * Add a new todo to the list
+   * @param title - The title of the todo
+   * @param description - The description of the todo
    */
   const addTodo = useCallback((title: string, description: string) => {
     setTodos((prev) => [{ id: Date.now(), title, description }, ...prev]);
   }, []);
 
   /**
-   * Delete a todo item from the list by its ID.
-   * @param id - The ID of the todo to delete.
+   * Delete a todo from the list by its ID
+   * @param id - The ID of the todo to delete
    */
   const deleteTodo = useCallback((id: number) => {
     setTodos((prev) => prev.filter((todo) => todo.id !== id));
   }, []);
 
   /**
-   * Edit an existing todo item by its ID.
-   * @param id - The ID of the todo to edit.
-   * @param updatedTodo - Partial updates to apply to the todo.
+   * Edit an existing todo in the list
+   * @param id - The ID of the todo to edit
+   * @param updatedTodo - The updated properties of the todo
    */
   const editTodo = useCallback((id: number, updatedTodo: Partial<Todo>) => {
     setTodos((prev) =>
@@ -57,26 +60,58 @@ const App = () => {
   }, []);
 
   /**
-   * Load more todos for pagination by incrementing the current page.
+   * Load more todos for pagination
    */
   const loadMoreTodos = useCallback(() => {
     setPage((prev) => prev + 1);
   }, []);
 
-  // Calculate the todos to display based on the current page
+  /**
+   * Handle sorting of the todos based on selected criteria
+   */
+  const sortedTodos = useMemo(() => {
+    if (!sortCriteria) return todos;
+
+    return [...todos].sort((a, b) => {
+      const key = sortCriteria.includes("title") ? "title" : "description";
+      const order = sortCriteria.includes("asc") ? 1 : -1;
+      return a[key].localeCompare(b[key]) * order;
+    });
+  }, [todos, sortCriteria]);
+
+  /**
+   * Calculate the todos to display based on pagination and sorting
+   */
   const displayedTodos = useMemo(
-    () => todos.slice(0, page * TODOS_PER_PAGE),
-    [todos, page]
+    () => sortedTodos.slice(0, page * TODOS_PER_PAGE),
+    [sortedTodos, page]
   );
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 min-h-screen">
-      {/* Sidebar for adding todos */}
+      {/* Sidebar for adding new todos */}
       <div className="sidebar p-4 flex items-center justify-center">
         <AddTodoForm addTodo={addTodo} />
       </div>
+
       {/* Main content area for displaying todos */}
       <div className="content-area p-4">
+        {/* Sorting dropdown */}
+        <div className="flex justify-end pb-4">
+          <select
+            value={sortCriteria}
+            onChange={(e) => setSortCriteria(e.target.value)}
+            className="p-2 border rounded"
+          >
+            <option value="">Sort By</option>
+            <option value="title-asc">Title (A-Z)</option>
+            <option value="title-desc">Title (Z-A)</option>
+            <option value="description-asc">Description (A-Z)</option>
+            <option value="description-desc">Description (Z-A)</option>
+          </select>
+        </div>
+
+        {/* Display todos or empty state */}
         {displayedTodos.length > 0 ? (
           <TodoList
             todos={displayedTodos}
@@ -86,7 +121,7 @@ const App = () => {
             hasMore={displayedTodos.length < todos.length}
           />
         ) : (
-          <EmptyState /> // Display empty state when no todos exist
+          <EmptyState />
         )}
       </div>
     </div>
