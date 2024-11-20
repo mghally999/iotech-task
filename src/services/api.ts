@@ -1,35 +1,73 @@
 import axios from "axios";
 import { Todo } from "../models/interfaces";
 
-// Base URL for JSONPlaceholder API
-const API_URL = "https://jsonplaceholder.typicode.com";
-// Base URL for Quotable API
-const QUOTE_API_URL = "https://api.quotable.io/quotes?limit=20";
+// Base URLs
+const TODOS_API_URL = "https://jsonplaceholder.typicode.com/todos";
+const QUOTES_API_URL = "https://api.quotable.io/quotes?limit=20";
 
 /**
- * Fetches todos and corresponding quotes from two APIs and combines them into one list.
- * @returns A Promise that resolves to an array of combined Todo items with quotes as descriptions.
+ * Fetch todos from the JSONPlaceholder API and pair them with quotes.
  */
 export const fetchItems = async (): Promise<Todo[]> => {
   try {
-    // Fetch todos from JSONPlaceholder
-    const todosResponse = await axios.get(`${API_URL}/todos?_limit=20`);
-    const todosData = todosResponse.data;
+    const [todosResponse, quotesResponse] = await Promise.all([
+      axios.get(`${TODOS_API_URL}?_limit=20`),
+      axios.get(QUOTES_API_URL),
+    ]);
 
-    // Fetch quotes from Quotable API
-    const quotesResponse = await axios.get(QUOTE_API_URL);
-    const quotesData = quotesResponse.data.results;
+    const todos = todosResponse.data;
+    const quotes = quotesResponse.data.results;
 
-    // Map todos and pair them with quotes for descriptions
-    return todosData.map((item: any, index: number) => ({
-      id: item.id,
-      title: item.title || "Untitled Task",
+    // Pair todos with quotes
+    return todos.map((todo: any, index: number) => ({
+      id: todo.id,
+      title: todo.title || "Untitled Task",
       description:
-        quotesData[index % quotesData.length]?.content ||
-        "No description available",
+        quotes[index % quotes.length]?.content || "No description available",
     }));
   } catch (error) {
-    console.error("Error fetching items:", error);
-    throw error; // Re-throw the error to handle it in the calling function
+    console.error("Error fetching todos or quotes:", error);
+    throw error;
+  }
+};
+
+/**
+ * Add a new todo.
+ */
+export const addItem = async (newTodo: Partial<Todo>): Promise<Todo> => {
+  try {
+    const response = await axios.post(TODOS_API_URL, newTodo);
+    return response.data;
+  } catch (error) {
+    console.error("Error adding todo:", error);
+    throw error;
+  }
+};
+
+/**
+ * Update an existing todo.
+ */
+export const updateItem = async (
+  id: number,
+  updatedTodo: Partial<Todo>
+): Promise<Todo> => {
+  try {
+    const response = await axios.put(`${TODOS_API_URL}/${id}`, updatedTodo);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating todo:", error);
+    throw error;
+  }
+};
+
+/**
+ * Delete a todo.
+ */
+export const deleteItem = async (id: number): Promise<void> => {
+  try {
+    await axios.delete(`${TODOS_API_URL}/${id}`);
+  } catch (error) {
+    console.error("Error deleting todo:", error);
+    throw error;
   }
 };

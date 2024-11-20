@@ -3,71 +3,99 @@ import AddTodoForm from "./components/AddTodoForm";
 import TodoList from "./components/TodoList";
 import EmptyState from "./components/EmptyState";
 import { Todo } from "./models/interfaces";
-import { fetchItems } from "./services/api";
+import { fetchItems, addItem, updateItem, deleteItem } from "./services/api";
 import { TODOS_PER_PAGE } from "./config/constants";
 import "./styles/index.css";
 
 /**
  * Main Application Component
- * Handles state, sorting, pagination, and integration with the mock API.
  */
 const App = () => {
-  const [todos, setTodos] = useState<Todo[]>([]); // State to manage the list of todos
-  const [page, setPage] = useState(1); // State to track pagination
-  const [sortCriteria, setSortCriteria] = useState<string>(""); // State to manage sorting criteria
+  const [todos, setTodos] = useState<Todo[]>([]); // State for todos
+  const [page, setPage] = useState(1); // State for pagination
+  const [sortCriteria, setSortCriteria] = useState<string>(""); // Sorting criteria
+  const [loading, setLoading] = useState(false); // Loading state
 
   /**
-   * Fetch initial data from the mock API when the component mounts
+   * Fetch initial todos and quotes
    */
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const data = await fetchItems();
         setTodos(data);
       } catch (error) {
         console.error("Error fetching todos:", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchData();
   }, []);
 
   /**
-   * Add a new todo to the list
-   * @param title - The title of the todo
-   * @param description - The description of the todo
+   * Add a new todo
    */
-  const addTodo = useCallback((title: string, description: string) => {
-    setTodos((prev) => [{ id: Date.now(), title, description }, ...prev]);
+  const addTodo = useCallback(async (title: string, description: string) => {
+    try {
+      setLoading(true);
+      const newTodo = await addItem({
+        title,
+        description: description || "No description available",
+      });
+      setTodos((prev) => [newTodo, ...prev]);
+    } catch (error) {
+      console.error("Error adding todo:", error);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   /**
-   * Delete a todo from the list by its ID
-   * @param id - The ID of the todo to delete
+   * Delete a todo
    */
-  const deleteTodo = useCallback((id: number) => {
-    setTodos((prev) => prev.filter((todo) => todo.id !== id));
+  const deleteTodo = useCallback(async (id: number) => {
+    try {
+      setLoading(true);
+      await deleteItem(id);
+      setTodos((prev) => prev.filter((todo) => todo.id !== id));
+    } catch (error) {
+      console.error("Error deleting todo:", error);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   /**
-   * Edit an existing todo in the list
-   * @param id - The ID of the todo to edit
-   * @param updatedTodo - The updated properties of the todo
+   * Edit a todo
    */
-  const editTodo = useCallback((id: number, updatedTodo: Partial<Todo>) => {
-    setTodos((prev) =>
-      prev.map((todo) => (todo.id === id ? { ...todo, ...updatedTodo } : todo))
-    );
-  }, []);
+  const editTodo = useCallback(
+    async (id: number, updatedTodo: Partial<Todo>) => {
+      try {
+        setLoading(true);
+        const updated = await updateItem(id, updatedTodo);
+        setTodos((prev) =>
+          prev.map((todo) => (todo.id === id ? { ...todo, ...updated } : todo))
+        );
+      } catch (error) {
+        console.error("Error editing todo:", error);
+      } finally {
+        setLoading(false);
+      }
+    },
+    []
+  );
 
   /**
-   * Load more todos for pagination
+   * Load more todos
    */
   const loadMoreTodos = useCallback(() => {
     setPage((prev) => prev + 1);
   }, []);
 
   /**
-   * Handle sorting of the todos based on selected criteria
+   * Handle sorting
    */
   const sortedTodos = useMemo(() => {
     if (!sortCriteria) return todos;
@@ -75,12 +103,12 @@ const App = () => {
     return [...todos].sort((a, b) => {
       const key = sortCriteria.includes("title") ? "title" : "description";
       const order = sortCriteria.includes("asc") ? 1 : -1;
-      return a[key].localeCompare(b[key]) * order;
+      return (a[key] || "").localeCompare(b[key] || "") * order;
     });
   }, [todos, sortCriteria]);
 
   /**
-   * Calculate the todos to display based on pagination and sorting
+   * Calculate displayed todos
    */
   const displayedTodos = useMemo(
     () => sortedTodos.slice(0, page * TODOS_PER_PAGE),
@@ -89,14 +117,13 @@ const App = () => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 min-h-screen">
-      {/* Sidebar for adding new todos */}
+      {/* Sidebar */}
       <div className="sidebar p-4 flex items-center justify-center">
         <AddTodoForm addTodo={addTodo} />
       </div>
 
-      {/* Main content area for displaying todos */}
+      {/* Main Content */}
       <div className="content-area p-4">
-        {/* Sorting dropdown */}
         <div className="flex justify-end pb-4">
           <select
             value={sortCriteria}
@@ -111,7 +138,6 @@ const App = () => {
           </select>
         </div>
 
-        {/* Display todos or empty state */}
         {displayedTodos.length > 0 ? (
           <TodoList
             todos={displayedTodos}
