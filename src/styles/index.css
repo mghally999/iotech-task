@@ -69,3 +69,7 @@ p {
   box-shadow: 0 0 5rem 0.1rem rgba(230, 125, 34, 0.5);
   color: #000000;
 }
+
+select {
+  outline: none;
+}

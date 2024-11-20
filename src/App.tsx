@@ -3,7 +3,7 @@ import AddTodoForm from "./components/AddTodoForm";
 import TodoList from "./components/TodoList";
 import EmptyState from "./components/EmptyState";
 import { Todo } from "./models/interfaces";
-import { fetchItems, addItem, updateItem, deleteItem } from "./services/api";
+import { fetchItems, addItem, deleteItem } from "./services/api";
 import { TODOS_PER_PAGE } from "./config/constants";
 import "./styles/index.css";
 
@@ -74,10 +74,23 @@ const App = () => {
     async (id: number, updatedTodo: Partial<Todo>) => {
       try {
         setLoading(true);
-        const updated = await updateItem(id, updatedTodo);
+
+        // Simulate the edit locally
         setTodos((prev) =>
-          prev.map((todo) => (todo.id === id ? { ...todo, ...updated } : todo))
+          prev.map((todo) =>
+            todo.id === id ? { ...todo, ...updatedTodo } : todo
+          )
         );
+
+        console.warn(
+          "Edit simulated locally. API edit functionality is not supported."
+        );
+
+        // Uncomment if API starts supporting editing
+        // const updated = await updateItem(id, updatedTodo);
+        // setTodos((prev) =>
+        //   prev.map((todo) => (todo.id === id ? { ...todo, ...updated } : todo))
+        // );
       } catch (error) {
         console.error("Error editing todo:", error);
       } finally {
